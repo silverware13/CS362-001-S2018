@@ -7,13 +7,9 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 import calendar.Appt;
 import calendar.CalendarUtil;
-public class ApptTest  {
 
-/*
-public Appt(int startHour, int startMinute,
-        int startDay, int startMonth, int startYear,
-         String title, String description, String emailAddress ) {
-*/
+
+public class ApptTest  {
 
   //valid full date and time
   @Test(timeout = 4000)
