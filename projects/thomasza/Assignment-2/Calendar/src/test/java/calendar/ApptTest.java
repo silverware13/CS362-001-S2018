@@ -64,7 +64,7 @@ public class ApptTest  {
   //invalid hour - low
   @Test(timeout = 4000)
   public void test05()  throws Throwable  {
-      Appt appt0 = new Appt(-5, 5, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(-5, 5, 5, 5, 100, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -72,7 +72,7 @@ public class ApptTest  {
   //invalid day - low
   @Test(timeout = 4000)
   public void test06()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, -5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, -5, 2, 1600, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -80,7 +80,7 @@ public class ApptTest  {
   //invalid month - low
   @Test(timeout = 4000)
   public void test07()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, 5, -5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, 5, -5, 1600, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -229,22 +229,22 @@ public class ApptTest  {
       assertFalse(appt0.hasTimeSet());
   }
 
-  //is recurring - recur forver each week
+  //is recurring - recur forever each week
   @Test(timeout = 4000)
   public void test25()  throws Throwable  {
       Appt appt0 = new Appt(10, 15, 2020, "Meeting", "This is a meeting", "work@gmail.com");
       int[] recurDaysArr = {2, 3, 5};
-      appt0.setRecurrence(recurDaysArr, 1, 2, 1000);
+      appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 2, Appt.RECUR_NUMBER_FOREVER);
       assertTrue(appt0.isRecurring());
       int[] recurDaysArr2 = appt0.getRecurDays();
   }
 
-  //is recurring - recur forver each week, no set days
+  //is recurring - recur forever each week, no set days
   @Test(timeout = 4000)
   public void test26()  throws Throwable  {
       Appt appt0 = new Appt(10, 15, 2020, "Meeting", "This is a meeting", "work@gmail.com");
       int[] recurDaysArr = null;
-      appt0.setRecurrence(recurDaysArr, 1, 2, 1000);
+      appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 2, Appt.RECUR_NUMBER_FOREVER);
       assertTrue(appt0.isRecurring());
       int[] recurDaysArr2 = appt0.getRecurDays();
   }
