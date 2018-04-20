@@ -11,17 +11,12 @@ import calendar.CalendarUtil;
 
 public class ApptTest  {
 
-  //valid full date and time
+  //to string - valid
   @Test(timeout = 4000)
   public void test00()  throws Throwable  {
       Appt appt0 = new Appt(15, 30, 12, 14, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
       String string0 = appt0.toString();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("\t14/12/2018 at 3:30pm ,Birthday Party, This is my birthday party\n", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
-      assertTrue(appt0.getValid());
   }
 
   //valid date with no minute or hour
@@ -29,12 +24,7 @@ public class ApptTest  {
   public void test01()  throws Throwable  {
       Appt appt0 = new Appt(12, 14, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
       String string0 = appt0.toString();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("\t14/12/2018 at -1:-1am ,Birthday Party, This is my birthday party\n", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
-      assertTrue(appt0.getValid());
   }
 
   //valid date
@@ -129,7 +119,7 @@ public class ApptTest  {
   @Test(timeout = 4000)
   public void test13()  throws Throwable  {
       Appt appt0 = new Appt(5, 5, 5, 13, 5, "Meeting", "This is a meeting", "work@gmail.com");
-      appt0.getXmlElement();
+      assertEquals(null, appt0.getXmlElement());
   }
 
   //valid email
@@ -137,11 +127,7 @@ public class ApptTest  {
   public void test14()  throws Throwable  {
       Appt appt0 = new Appt(5, 5, 5, 13, 5, "Meeting", "This is a meeting", "work@gmail.com");
       String string0 = appt0.getEmailAddress();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("work@gmail.com", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
   }
 
   //no email
@@ -149,11 +135,7 @@ public class ApptTest  {
   public void test15()  throws Throwable  {
       Appt appt0 = new Appt(5, 5, 5, 13, 5, "Meeting", "This is a meeting", null);
       String string0 = appt0.getEmailAddress();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
   }
 
   //no description
@@ -161,11 +143,7 @@ public class ApptTest  {
   public void test16()  throws Throwable  {
       Appt appt0 = new Appt(15, 30, 12, 14, 2018, "Meeting", null, "work@gmail.com");
       String string0 = appt0.getDescription();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
   }
 
   //no title
@@ -173,11 +151,7 @@ public class ApptTest  {
   public void test17()  throws Throwable  {
       Appt appt0 = new Appt(15, 30, 12, 14, 2018, null, "This is a meeting", "work@gmail.com");
       String string0 = appt0.getTitle();
-      assertEquals(2, appt0.getRecurBy());
-      assertFalse(appt0.isRecurring());
       assertEquals("", string0);
-      assertEquals(0, appt0.getRecurIncrement());
-      appt0.setValid();
   }
 
   //on this day - all valid
@@ -236,7 +210,6 @@ public class ApptTest  {
       int[] recurDaysArr = {2, 3, 5};
       appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 2, Appt.RECUR_NUMBER_FOREVER);
       assertTrue(appt0.isRecurring());
-      int[] recurDaysArr2 = appt0.getRecurDays();
   }
 
   //is recurring - recur forever each week, no set days
@@ -246,7 +219,6 @@ public class ApptTest  {
       int[] recurDaysArr = null;
       appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 2, Appt.RECUR_NUMBER_FOREVER);
       assertTrue(appt0.isRecurring());
-      int[] recurDaysArr2 = appt0.getRecurDays();
   }
 
   //is not recurring
@@ -273,5 +245,4 @@ public class ApptTest  {
       String string0 = appt0.toString();
       assertFalse(appt0.getValid());
   }
-
 }
