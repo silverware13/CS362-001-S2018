@@ -46,7 +46,7 @@ public class ApptTest  {
   //invalid min - low
   @Test(timeout = 4000)
   public void test04()  throws Throwable  {
-      Appt appt0 = new Appt(5, -5, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, -1, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -54,7 +54,7 @@ public class ApptTest  {
   //invalid hour - low
   @Test(timeout = 4000)
   public void test05()  throws Throwable  {
-      Appt appt0 = new Appt(-5, 5, 5, 5, 100, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(-1, 5, 5, 5, 100, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -62,7 +62,7 @@ public class ApptTest  {
   //invalid day - low
   @Test(timeout = 4000)
   public void test06()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, -5, 2, 1600, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, 0, 2, 1600, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -70,7 +70,7 @@ public class ApptTest  {
   //invalid month - low
   @Test(timeout = 4000)
   public void test07()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, 5, -5, 1600, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, 5, 0, 1600, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -78,7 +78,7 @@ public class ApptTest  {
   //invalid year - low
   @Test(timeout = 4000)
   public void test08()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, 5, 5, -5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, 5, 5, 0, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -102,7 +102,7 @@ public class ApptTest  {
   //invalid day - high
   @Test(timeout = 4000)
   public void test11()  throws Throwable  {
-      Appt appt0 = new Appt(5, 5, 32, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      Appt appt0 = new Appt(5, 5, (CalendarUtil.NumDaysInMonth(5, 5-1)+1), 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertFalse(appt0.getValid());
   }
@@ -244,5 +244,77 @@ public class ApptTest  {
       appt0.setValid();
       String string0 = appt0.toString();
       assertFalse(appt0.getValid());
+  }
+
+  //valid min - low
+  @Test(timeout = 4000)
+  public void test30()  throws Throwable  {
+      Appt appt0 = new Appt(5, 0, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid hour - low
+  @Test(timeout = 4000)
+  public void test31()  throws Throwable  {
+      Appt appt0 = new Appt(0, 5, 5, 5, 100, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid day - low
+  @Test(timeout = 4000)
+  public void test32()  throws Throwable  {
+      Appt appt0 = new Appt(5, 5, 1, 2, 1600, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid month - low
+  @Test(timeout = 4000)
+  public void test33()  throws Throwable  {
+      Appt appt0 = new Appt(5, 5, 5, 1, 1600, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid year - low
+  @Test(timeout = 4000)
+  public void test34()  throws Throwable  {
+      Appt appt0 = new Appt(5, 5, 5, 5, 1, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid min - high
+  @Test(timeout = 4000)
+  public void test35()  throws Throwable  {
+      Appt appt0 = new Appt(5, 59, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid hour - high
+  @Test(timeout = 4000)
+  public void test36()  throws Throwable  {
+      Appt appt0 = new Appt(23, 5, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid day - high
+  @Test(timeout = 4000)
+  public void test37()  throws Throwable  {
+      Appt appt0 = new Appt(5, 5, CalendarUtil.NumDaysInMonth(5, 5-1), 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
+  }
+
+  //valid month - high
+  @Test(timeout = 4000)
+  public void test38()  throws Throwable  {
+      Appt appt0 = new Appt(5, 5, 5, 12, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      assertTrue(appt0.getValid());
   }
 }

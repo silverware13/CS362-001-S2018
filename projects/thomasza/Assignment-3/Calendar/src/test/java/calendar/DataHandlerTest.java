@@ -21,6 +21,8 @@ import java.util.LinkedList;
 
 public class DataHandlerTest{
 
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
   //clean up files before every test
   @Before
   public void setUp() {
@@ -306,5 +308,22 @@ public class DataHandlerTest{
             }
         }
         assertEquals(2, numberappt);
+    }
+
+    //get appointment range - should not display diagnoses
+    @Test(timeout = 4000)
+    public void test17()  throws Throwable  {
+        System.setOut(new PrintStream(outContent));
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {1};
+        appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 1, 1);
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        assertEquals("", outContent.toString());
     }
 }
