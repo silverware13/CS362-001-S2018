@@ -326,4 +326,5 @@ public class DataHandlerTest{
         calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
         assertEquals("", outContent.toString());
     }
+    
 }

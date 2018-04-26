@@ -144,7 +144,7 @@ public class CalDayTest{
       Appt appt0 = new Appt(10, 5, 7, 6, 2018, "Meeting1", "This is a meeting", "work@gmail.com");
       Appt appt1 = new Appt(8, 5, 7, 6, 2018, "Meeting2", "This is a meeting", "work@gmail.com");
       Appt appt2 = new Appt(14, 5, 7, 6, 2018, "Meeting3", "This is a meeting", "work@gmail.com");
-      Appt appt3 = new Appt(5, 5, 7, 6, 2018, "Meeting4", "This is a meeting", "work@gmail.com");
+      Appt appt3 = new Appt(14, 5, 7, 6, 2018, "Meeting4", "This is a meeting", "work@gmail.com");
       Appt appt4 = new Appt(23, 5, 7, 6, 2018, "Meeting5", "This is a meeting", "work@gmail.com");
       day0.addAppt(appt0);
       day0.addAppt(appt1);
@@ -152,19 +152,16 @@ public class CalDayTest{
       day0.addAppt(appt3);
       day0.addAppt(appt4);
       String string0 = day0.toString();
-      assertEquals("\t --- 7/10/2018 --- \n --- -------- Appointments ------------ --- \n" + "\t6/7/2018 at 5:5am ,Meeting4, This is a meeting\n" + " \t6/7/2018 at 8:5am ,Meeting2, This is a meeting\n" + " \t6/7/2018 at 10:5am ,Meeting1, This is a meeting\n" + " \t6/7/2018 at 2:5pm ,Meeting3, This is a meeting\n" + " \t6/7/2018 at 11:5pm ,Meeting5, This is a meeting\n" + " \n", string0);
+      assertEquals("\t --- 7/10/2018 --- \n --- -------- Appointments ------------ --- \n" + "\t6/7/2018 at 8:5am ,Meeting2, This is a meeting\n" + " \t6/7/2018 at 10:5am ,Meeting1, This is a meeting\n" + " \t6/7/2018 at 2:5pm ,Meeting3, This is a meeting\n" + " \t6/7/2018 at 2:5pm ,Meeting4, This is a meeting\n" + " \t6/7/2018 at 11:5pm ,Meeting5, This is a meeting\n" + " \n", string0);
   }
 
-  //should not accept null appts
-  @Test(timeout = 4000)
+  //test iterator null throw error
+  @Test(expected = AssertionError.class)
   public void test12()  throws Throwable  {
       GregorianCalendar someday = new GregorianCalendar(2018, 5, 10);
       CalDay day0 = new CalDay(someday);
-      Appt appt0 = new Appt(8, 5, 7, 6, 2018, "Meeting", "This is a meeting", "work@gmail.com");
-      Appt appt1 = new Appt(10, 5, 7, 6, 2018, "Meeting2", "This is a meeting", "work@gmail.com");
-      day0.addAppt(appt0);
-      day0.addAppt(appt1);
-      String string0 = day0.toString();
-      assertEquals("\t --- 7/10/2018 --- \n --- -------- Appointments ------------ --- \n" + "\t6/7/2018 at 8:5am ,Meeting, This is a meeting\n" + " \t6/7/2018 at 10:5am ,Meeting2, This is a meeting\n \n", string0);
+      day0.valid = false;
+      Iterator itr = ((CalDay)day0).iterator();
+      fail();
   }
 }
