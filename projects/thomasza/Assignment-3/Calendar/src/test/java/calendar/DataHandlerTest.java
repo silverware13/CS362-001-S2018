@@ -326,5 +326,83 @@ public class DataHandlerTest{
         calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
         assertEquals("", outContent.toString());
     }
-    
+
+    //test null throw error
+    @Test(expected = NullPointerException.class)
+    public void test18()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        data0 = null;
+        GregorianCalendar firstday = new GregorianCalendar(2018, 1, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2019, 10, 20);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        fail();
+    }
+
+    //test save
+    @Test(timeout = 4000)
+    public void test19()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {1};
+        appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 1, 1);
+        appt0.setValid();
+        assertTrue(data0.saveAppt(appt0));
+    }
+
+    //test save - autosave off - should NOT have deleted a file
+    @Test(timeout = 4000)
+    public void test20()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml", false);
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        File testfile = new File("calendar_test.xml");
+        assertFalse(testfile.delete());
+    }
+
+    //test save - autosave on - should have deleted a file
+    @Test(timeout = 4000)
+    public void test21()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        File testfile = new File("calendar_test.xml");
+        assertTrue(testfile.delete());
+    }
+
+    //test deleteAppt - autosave off - should NOT have deleted a file
+    @Test(timeout = 4000)
+    public void test22()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml", false);
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        data0.deleteAppt(appt0);
+        File testfile = new File("calendar_test.xml");
+        assertFalse(testfile.delete());
+    }
+
+    //test deleteAppt - autosave on - should have deleted a file
+    @Test(timeout = 4000)
+    public void test23()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        data0.deleteAppt(appt0);
+        File testfile = new File("calendar_test.xml");
+        assertTrue(testfile.delete());
+    }
 }
