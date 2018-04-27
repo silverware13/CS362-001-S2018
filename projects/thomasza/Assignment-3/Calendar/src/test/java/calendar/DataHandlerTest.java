@@ -405,4 +405,40 @@ public class DataHandlerTest{
         File testfile = new File("calendar_test.xml");
         assertTrue(testfile.delete());
     }
+
+    //get appointment range - reccur bad day
+    @Test(timeout = 4000)
+    public void test24()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {7};
+        appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 1, 100);
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        int numberappt = 0;
+        for (int i = 0; i < calDays.size(); i++) {
+            LinkedList<Appt>  appts = calDays.get(i).getAppts();
+            for(int ii = 0; ii < appts.size(); ii++) {
+                numberappt++;
+            }
+        }
+        assertEquals(5, numberappt);
+    }
+
+    //deleteAppt - xmlElement should be null
+    @Test(timeout = 4000)
+    public void test25()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        data0.deleteAppt(appt0);
+        assertNull(appt0.getXmlElement());
+    }
 }
