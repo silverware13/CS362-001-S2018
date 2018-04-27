@@ -441,4 +441,82 @@ public class DataHandlerTest{
         data0.deleteAppt(appt0);
         assertNull(appt0.getXmlElement());
     }
+
+    //getApptRange - throw exception
+    @Test(expected = AssertionError.class)
+    public void test26()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        fail();
+    }
+
+    //getNextApptOccurrence - return of null, not recurring
+    @Test(timeout = 4000)
+    public void test27()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 1, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2050, 10, 20);
+        Appt appt0 = new Appt(8, 10, 1, 5, 2000, "Meeting", "This is a meeting", "work@gmail.com");
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        int numberappt = 0;
+        for (int i = 0; i < calDays.size(); i++) {
+            LinkedList<Appt>  appts = calDays.get(i).getAppts();
+            for(int ii = 0; ii < appts.size(); ii++) {
+                numberappt++;
+            }
+        }
+        assertEquals(0, numberappt);
+    }
+
+    //get appointment range - reccur day
+    @Test(timeout = 4000)
+    public void test28()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {6};
+        appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 1, 100);
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        int numberappt = 0;
+        for (int i = 0; i < calDays.size(); i++) {
+            LinkedList<Appt>  appts = calDays.get(i).getAppts();
+            for(int ii = 0; ii < appts.size(); ii++) {
+                numberappt++;
+            }
+        }
+        assertEquals(5, numberappt);
+    }
+
+    //get appointment range - reccur day
+    @Test(timeout = 4000)
+    public void test29()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 1, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {8};
+        appt0.setRecurrence(recurDaysArr, -404, 1, 100);
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        int numberappt = 0;
+        for (int i = 0; i < calDays.size(); i++) {
+            LinkedList<Appt>  appts = calDays.get(i).getAppts();
+            for(int ii = 0; ii < appts.size(); ii++) {
+                numberappt++;
+            }
+        }
+        assertEquals(1, numberappt);
+    }
 }
