@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
 import calendar.Appt;
 import calendar.CalDay;
 import calendar.DataHandler;
+import java.lang.reflect.*;
 
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
+
 
 
 public class DataHandlerTest{
@@ -497,7 +499,7 @@ public class DataHandlerTest{
         assertEquals(5, numberappt);
     }
 
-    //get appointment range - reccur day
+    //get appointment range - invalid recurrence by
     @Test(timeout = 4000)
     public void test29()  throws Throwable  {
         DataHandler data0 = new DataHandler("calendar_test.xml");
@@ -518,5 +520,41 @@ public class DataHandlerTest{
             }
         }
         assertEquals(1, numberappt);
+    }
+
+    //get appointment range - single recur day
+    @Test(timeout = 4000)
+    public void test30()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 5, 1);
+        Appt appt0 = new Appt(5, 5, 1, 1, 2018, "Event", "This is an event.", "home@yahoo.com");
+        int[] recurDaysArr = {1};
+        appt0.setRecurrence(recurDaysArr, Appt.RECUR_BY_WEEKLY, 4, Appt.RECUR_NUMBER_FOREVER);
+        appt0.setValid();
+        data0.saveAppt(appt0);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
+        int numberappt = 0;
+        for (int i = 0; i < calDays.size(); i++) {
+            LinkedList<Appt>  appts = calDays.get(i).getAppts();
+            for(int ii = 0; ii < appts.size(); ii++) {
+                numberappt++;
+            }
+        }
+        assertEquals(22, numberappt);
+    }
+
+    //use invalid DataHandler
+    @Test(timeout = 4000)
+    public void test31()  throws Throwable  {
+        DataHandler data0 = new DataHandler("calendar_test.xml");
+        Field f1 = data0.getClass().getDeclaredField("valid");
+        f1.setAccessible(true);
+        f1.set(data0, false);
+        GregorianCalendar firstday = new GregorianCalendar(2018, 0, 1);
+        GregorianCalendar lastday = new GregorianCalendar(2018, 5, 1);
+        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
+        calDays = (LinkedList<CalDay>) data0.getApptRange(firstday, lastday);
     }
 }

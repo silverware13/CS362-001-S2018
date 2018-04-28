@@ -2,14 +2,26 @@
 
 package calendar;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.Arrays;
 import static org.junit.Assert.*;
+import java.io.*;
 import calendar.Appt;
 import calendar.CalendarUtil;
 
 
 public class ApptTest  {
+
+  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+  @After
+  public void resetStdErr() {
+      System.setErr(System.err);
+  }
 
   //to string - valid
   @Test(timeout = 4000)
@@ -316,5 +328,27 @@ public class ApptTest  {
       Appt appt0 = new Appt(5, 5, 5, 12, 5, "Meeting", "This is a meeting", "work@gmail.com");
       appt0.setValid();
       assertTrue(appt0.getValid());
+  }
+
+  //toString valid appointment - show stderr - should be no output.
+  @Test(timeout = 4000)
+  public void test39()  throws Throwable  {
+      System.setErr(new PrintStream(errContent));
+      Appt appt0 = new Appt(5, 5, 5, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      String string0 = appt0.toString();
+      assertEquals("", errContent.toString());
+  }
+
+  //toString invalid appointment - show stderr - should be output.
+  @Test(timeout = 4000)
+  public void test40()  throws Throwable  {
+      System.setErr(new PrintStream(errContent));
+      Appt appt0 = new Appt(-40, 5, -500, 5, 5, "Meeting", "This is a meeting", "work@gmail.com");
+      appt0.setValid();
+      String string0 = appt0.toString();
+      String string1 = errContent.toString();
+      string1 = string1.replaceAll("\\s", "");
+      assertEquals("Thisappointmentisnotvalid", string1);
   }
 }
