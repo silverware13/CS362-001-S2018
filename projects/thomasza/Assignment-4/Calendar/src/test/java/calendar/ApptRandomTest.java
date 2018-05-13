@@ -52,7 +52,7 @@ public class ApptRandomTest {
      * Generate Random Tests that tests Appt Class.
      */
 	 @Test
-	  public void radnomtest()  throws Throwable  {
+	  public void randomtest()  throws Throwable  {
 
 		 long startTime = Calendar.getInstance().getTimeInMillis();
 		 long elapsed = Calendar.getInstance().getTimeInMillis() - startTime;
