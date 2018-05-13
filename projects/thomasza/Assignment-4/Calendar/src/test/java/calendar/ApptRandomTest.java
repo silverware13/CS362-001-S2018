@@ -85,13 +85,14 @@ public class ApptRandomTest {
 		                 emailAddress);
 
 				appt.setValid();
+
 				//Check isOn for new appointment
 				appt.isOn(startDay, startMonth, startYear);
 				//Get new dates and check
-				startDay=ValuesGenerator.getRandomIntBetween(random, 0, 32);
-				startMonth=ValuesGenerator.getRandomIntBetween(random, 0, 13);
-				startYear=ValuesGenerator.getRandomIntBetween(random, -100, 2018);
-				appt.isOn(startMonth, startDay, startYear);
+				int someDay=ValuesGenerator.getRandomIntBetween(random, 0, 32);
+				int someMonth=ValuesGenerator.getRandomIntBetween(random, 0, 13);
+				int someYear=ValuesGenerator.getRandomIntBetween(random, -100, 2018);
+				appt.isOn(someMonth, someDay, someYear);
 
 			 if(!appt.getValid())continue;
 			for (int i = 0; i < NUM_TESTS; i++) {
@@ -124,5 +125,74 @@ public class ApptRandomTest {
 		}
 
 		 System.out.println("Done testing...");
+	 }
+
+	 @Test
+	  public void randomtest2()  throws Throwable  {
+
+		 long startTime = Calendar.getInstance().getTimeInMillis();
+		 long elapsed = Calendar.getInstance().getTimeInMillis() - startTime;
+
+		try{
+			for (int iteration = 0; elapsed < TestTimeout; iteration++) {
+				long randomseed =System.currentTimeMillis(); //10
+				Random random = new Random(randomseed);
+
+				 int startHour=ValuesGenerator.getRandomIntBetween(random, -1, 24);
+				 int startMinute=ValuesGenerator.getRandomIntBetween(random, -1, 60);
+				 int startDay=ValuesGenerator.getRandomIntBetween(random, 0, 32);
+				 int startMonth=ValuesGenerator.getRandomIntBetween(random, 0, 13);
+				 int startYear=ValuesGenerator.getRandomIntBetween(random, -100, 2018);
+				 String title="Birthday Party";
+				 String description="This is my birthday party.";
+				 String emailAddress="xyz@gmail.com";
+
+				 //Construct a new Appointment object with the initial data
+				 //Construct a new Appointment object with the initial data
+				 Appt appt = new Appt(startHour,
+						  startMinute ,
+						  startDay ,
+						  startMonth ,
+						  startYear ,
+						  title,
+						 description,
+						 emailAddress);
+
+				appt.setValid();
+
+				//Check isOn for new appointment
+				appt.isOn(startDay, startMonth, startYear);
+				//Get new dates and check
+				int someDay=ValuesGenerator.getRandomIntBetween(random, 0, 32);
+				int someMonth=ValuesGenerator.getRandomIntBetween(random, 0, 13);
+				int someYear=ValuesGenerator.getRandomIntBetween(random, -100, 2018);
+				appt.isOn(someMonth, someDay, someYear);
+
+				//confirm that setvalid is working correctly
+				boolean checkValid;
+
+				if (startMonth < 1 || startMonth > 12)
+					checkValid = false;
+				else if (startHour < 0 || startHour > 23)
+					checkValid = false;
+				else if (startMinute < 0 || startMinute > 59)
+					checkValid = false;
+				else if (startYear <= 0)
+					checkValid = false;
+				else {
+					int NumDaysInMonth = CalendarUtil.NumDaysInMonth(startYear, startMonth - 1);
+					if (startDay < 1 || startDay > NumDaysInMonth)
+						checkValid = false;
+					else
+						checkValid = true;
+				}
+
+				assertEquals(appt.getValid(), checkValid);
+
+				elapsed = (Calendar.getInstance().getTimeInMillis() - startTime);
+			}
+		}catch(NullPointerException e){
+
+		}
 	 }
 }
