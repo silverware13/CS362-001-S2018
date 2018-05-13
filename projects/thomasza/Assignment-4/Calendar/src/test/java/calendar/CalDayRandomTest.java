@@ -2,7 +2,6 @@ package calendar;
 
 import java.util.Calendar;
 import java.util.Random;
-import static org.junit.Assert.*;
 import calendar.Appt;
 import calendar.CalDay;
 import java.util.*;
@@ -34,9 +33,9 @@ public class CalDayRandomTest {
 
  		try{
  			for (int iteration = 0; elapsed < TestTimeout; iteration++) {
-		  		long randomseed = System.currentTimeMillis(); //10
-		  		Random random = new Random(randomseed);
-
+				long randomseed = System.currentTimeMillis(); //10
+				Random random = new Random(randomseed);
+				
 		  		int startHour=ValuesGenerator.getRandomIntBetween(random, -1, 24);
 		  		int startMinute=ValuesGenerator.getRandomIntBetween(random, -1, 60);
 		  		int startDay=ValuesGenerator.getRandomIntBetween(random, 0, 32);
@@ -59,14 +58,15 @@ public class CalDayRandomTest {
 	      		day0.addAppt(appt1);
 		  		day0.addAppt(appt2);
 
+				//show elapsed time
 				elapsed = (Calendar.getInstance().getTimeInMillis() - startTime);
 			   	if((iteration%10000)==0 && iteration!=0 )
 					System.out.println("elapsed time: "+ elapsed + " of "+TestTimeout);
-				}
+			}
 
-	}catch(NullPointerException e){
-	}
+		}catch(NullPointerException e){
+		}
 
-	System.out.println("Done testing...");
+		System.out.println("Done testing...");
  	}
 }
