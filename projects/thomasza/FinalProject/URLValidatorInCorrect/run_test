@@ -3,4 +3,4 @@ mvn clean
 mvn compile
 mvn test
 mvn  jacoco:report
-mvn org.pitest:pitest-maven:mutationCoverage
+#mvn org.pitest:pitest-maven:mutationCoverage
