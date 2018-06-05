@@ -1,4 +1,3 @@
-
 package finalprojectB;
 
 import org.junit.After;
@@ -16,19 +15,20 @@ import junit.framework.TestCase;
 //It is an optional to use this file, you can generate your own test file(s) to test the target function!
 // Again, it is up to you to use this file or not!
 
-public class UrlValidatorTest2 extends TestCase {
+public class UrlValidatorTest2 { //extends TestCase {
 
 
-   public UrlValidatorTest2(String testName) {
-      super(testName);
-   }
+   //public UrlValidatorTest2(String testName) {
+   //super(testName);
+   //}
 
    @Test(timeout = 4000)
    public void testManualTest_01()
    {
        UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
        String url = "http://www.google.com";
-       assertTrue("This url should be valid", urlVal.isValid(url));
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
    }
 
    @Test(timeout = 4000)
@@ -36,7 +36,8 @@ public class UrlValidatorTest2 extends TestCase {
    {
        UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
        String url = "ftp://www.google.com";
-       assertTrue("This url should be valid", urlVal.isValid(url));
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
    }
 
    @Test(timeout = 4000)
@@ -44,7 +45,18 @@ public class UrlValidatorTest2 extends TestCase {
    {
        UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
        String url = "httpw://www.google.com";
-       assertFalse("This url should NOT be valid", urlVal.isValid(url));
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+
+   @Test(timeout = 4000)
+   public void testManualTest_04()
+   {
+       UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
+       String url = "http://www.google.com";
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+       assertTrue(assertMessage, urlVal.isValid(url));
    }
 
    public void testYourFirstPartition()
