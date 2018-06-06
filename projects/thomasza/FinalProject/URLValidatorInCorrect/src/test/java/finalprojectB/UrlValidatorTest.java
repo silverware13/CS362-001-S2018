@@ -24,18 +24,42 @@ public class UrlValidatorTest extends TestCase {
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 /*
-   public void testManualTest_02() //CAUSES EXCEPTION
+   public void testManualTest_02() //FINDS BUGS
    {
        UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
        String url = "http://ftp.google.com";
        String assertMessage = String.format("This url should be valid: %s", url);
        assertTrue(assertMessage, urlVal.isValid(url));
    }
-*/
+
    public void testManualTest_03()
+   {
+       UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
+       String url = "https://www.google.com";
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+*/
+   public void testManualTest_invalid_01()
+   {
+       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
+       String url = "";
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+
+   public void testManualTest_invalid_02()
    {
        UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
        String url = "5pw://www.google.com";
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+
+   public void testManualTest_invalid_03()
+   {
+       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
+       String url = "http//www.google.com";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
