@@ -129,35 +129,67 @@ public class UrlValidatorTest extends TestCase {
       Random rand = new Random();
       UrlValidator urlVal = new UrlValidator(null);
 
-      //valid schemes
+      //valid and invalid schemes
       String[] schemes = {"http://", "ftp://", "https://"};
-
-      //invalid schemes
       String[] invalidSchemes = {"httpss://", "http//", "http:\\"};
 
-      //valid authorities
+      //valid and invalid authorities
       String[] authoritys = {"www.website.com", "123.50.43.11",
                                 "255.255.255.255"};
-      //invalid authorities
       String[] invalidAuthoritys = {"300.55.12.33", "website", ""};
+
+      //valid and invalid ports
+      String[] ports = {"", ":12345", ":25"};
+      String[] invalidPorts = {":ABC", ":999999", ":-5000"};
+
+      //valid and invalid paths
+      String[] paths = {"", "/some/path", "/even/more/path/"};
+      String[] invalidPaths = {"/..", "/../", "/this//is//a//bad///path"};
 
       //test these custom urls against the method isValid
       for(int i = 1; i < 1000; i++){
-          //find what section will have a bad input if any
-          int badSection = (int )(rand.nextInt(4));
+
+          //half the tests will be valid and half with be invalid
+          int badSection = (int )(rand.nextInt(2));
+          if(badSection > 0){
+              //find what sections will have bad input
+              badSection = (int )(rand.nextInt(15) + 1);
+          }
+
+          //test a random value for each input
           int schemeVal = (int )(rand.nextInt(3));
           int authorityVal = (int )(rand.nextInt(3));
+          int portVal = (int )(rand.nextInt(3));
+          int pathVal = (int )(rand.nextInt(3));
+
+          String urlSch = schemes[schemeVal];
+          String urlAut = authoritys[authorityVal];
+          String urlPor = ports[portVal];
+          String urlPat = paths[pathVal];
+
+          String urlSchB = invalidSchemes[schemeVal];
+          String urlAutB = invalidAuthoritys[authorityVal];
+          String urlPorB = invalidPorts[portVal];
+          String urlPatB = invalidPaths[pathVal];
 
           //get the correct sections and put them together
           switch(badSection){
-              case 1: url = invalidSchemes[schemeVal] + authoritys[authorityVal];
-                      break;
-              case 2: url = schemes[schemeVal] + invalidAuthoritys[authorityVal];
-                      break;
-              case 3: url = invalidSchemes[schemeVal] + invalidAuthoritys[authorityVal];
-                      break;
-              default: url = url = schemes[schemeVal] + authoritys[authorityVal];
-                      break;
+              case 1: url = urlSchB + urlAut + urlPor + urlPat; break;
+              case 2: url = urlSch + urlAutB + urlPor + urlPat; break;
+              case 3: url = urlSch + urlAut + urlPorB + urlPat; break;
+              case 4: url = urlSch + urlAut + urlPor + urlPatB; break;
+              case 5: url = urlSchB + urlAutB + urlPor + urlPat; break;
+              case 6: url = urlSchB + urlAut + urlPorB + urlPat; break;
+              case 7: url = urlSchB + urlAut + urlPor + urlPatB; break;
+              case 8: url = urlSchB + urlAutB + urlPor + urlPatB; break;
+              case 9: url = urlSchB + urlAut + urlPorB + urlPatB; break;
+              case 10: url = urlSch + urlAutB + urlPorB + urlPat; break;
+              case 11: url = urlSch + urlAutB + urlPor + urlPatB; break;
+              case 12: url = urlSch + urlAutB + urlPorB + urlPatB; break;
+              case 13: url = urlSch + urlAut + urlPorB + urlPatB; break;
+              case 14: url = urlSch + urlAutB + urlPorB + urlPatB; break;
+              case 15: url = urlSchB + urlAutB + urlPorB + urlPatB; break;
+              default: url = urlSch + urlAut + urlPor + urlPat; break;
           }
 
           //check the validity of the url in the isValid method
