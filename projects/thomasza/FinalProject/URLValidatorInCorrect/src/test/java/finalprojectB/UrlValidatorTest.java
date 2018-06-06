@@ -156,7 +156,7 @@ public class UrlValidatorTest extends TestCase {
                       break;
               case 3: url = invalidSchemes[schemeVal] + invalidAuthoritys[authorityVal];
                       break;
-              default: url = schemes[schemeVal] + authoritys[authorityVal];
+              default: url = url = schemes[schemeVal] + authoritys[authorityVal];
                       break;
           }
 
@@ -167,7 +167,7 @@ public class UrlValidatorTest extends TestCase {
               System.out.printf("Invalid: %s\n", url);
           } else {
               String assertMessage = String.format("This url should be valid: %s", url);
-              assertFalse(assertMessage, urlVal.isValid(url));
+              assertTrue(assertMessage, urlVal.isValid(url));
               System.out.printf("Valid: %s\n", url);
           }
       }
