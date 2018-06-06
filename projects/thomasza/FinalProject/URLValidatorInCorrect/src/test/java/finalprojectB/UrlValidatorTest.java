@@ -43,6 +43,15 @@ public class UrlValidatorTest extends TestCase {
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 
+   //test valid address with port
+   public void testManualTest_04()
+   {
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "https://12.45.33.44:80";
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+
    //test invalid empty address
    public void testManualTestInvalid_01()
    {
@@ -66,6 +75,15 @@ public class UrlValidatorTest extends TestCase {
    {
        UrlValidator urlVal = new UrlValidator(null);
        String url = "http//www.website.com";
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+
+   //test invalid port
+   public void testManualTestInvalid_04()
+   {
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://www.website.com:-5000";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
@@ -134,8 +152,7 @@ public class UrlValidatorTest extends TestCase {
       String[] invalidSchemes = {"httpss://", "http//", "http:\\"};
 
       //valid and invalid authorities
-      String[] authoritys = {"www.website.com", "123.50.43.11",
-                                "255.255.255.255"};
+      String[] authoritys = {"www.Website.com", "12.50.43.11", "255.255.255.255"};
       String[] invalidAuthoritys = {"300.55.12.33", "website", ""};
 
       //valid and invalid ports
