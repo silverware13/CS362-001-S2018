@@ -16,65 +16,101 @@ public class UrlValidatorTest extends TestCase {
    	super(testName);
    }
 
+   //test valid http address
    public void testManualTest_01()
    {
-       UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
-       String url = "http://www.google.com";
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://www.website.com";
        String assertMessage = String.format("This url should be valid: %s", url);
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 /*
-   public void testManualTest_02() //FINDS BUGS
+   //test valid ftp address
+   public void testManualTest_02() //FINDS BUGS (EXCEPTION)
    {
-       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
-       String url = "http://ftp.google.com";
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "ftp://www.website.com";
        String assertMessage = String.format("This url should be valid: %s", url);
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 
+   //test valid ip address
    public void testManualTest_03()
    {
-       UrlValidator urlVal = new UrlValidator(null, null, 1 << 0);
-       String url = "https://www.google.com";
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "https://12.45.33.44";
        String assertMessage = String.format("This url should be valid: %s", url);
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 */
-   public void testManualTest_invalid_01()
+   //test invalid empty address
+   public void testManualTestInvalid_01()
    {
-       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
+       UrlValidator urlVal = new UrlValidator(null);
        String url = "";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
 
-   public void testManualTest_invalid_02()
+   //test invalid too long ip address
+   public void testManualTestInvalid_02()
    {
-       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
-       String url = "5pw://www.google.com";
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://12.45.33.44.13";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
 
-   public void testManualTest_invalid_03()
+   //test invalid http address that is missing ":"
+   public void testManualTestInvalid_03()
    {
-       UrlValidator urlVal = new UrlValidator(null, null,  1 << 0);
-       String url = "http//www.google.com";
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http//www.website.com";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
 
+   //partition test scheme
    public void testYourFirstPartition()
    {
-	 //You can use this function to implement your First Partition testing
-
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://www.website.com"; // medium length valid scheme
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+       url = "https://www.website.com"; // longest valid scheme
+       assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+       url = "ftp://www.website.com"; // shortest valid scheme
+       assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+       url = "httpss://www.website.com"; // just too long invalid scheme
+       assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+       url = "ft://www.website.com"; // just too short invalid scheme
+       assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
    }
 
-   public void testYourSecondPartition(){
-		 //You can use this function to implement your Second Partition testing
-
+   //partition test authority
+   public void testYourSecondPartition()
+   {
+      UrlValidator urlVal = new UrlValidator(null);
+      String url = "http://127.90.53.34"; // medium valid authority
+      String assertMessage = String.format("This url should be valid: %s", url);
+      assertTrue(assertMessage, urlVal.isValid(url));
+      url = "https://255.255.255.255"; // largest valid authority
+      assertMessage = String.format("This url should be valid: %s", url);
+      assertTrue(assertMessage, urlVal.isValid(url));
+      url = "https://0.0.0.0"; // smallest valid authority
+      assertMessage = String.format("This url should be valid: %s", url);
+      assertTrue(assertMessage, urlVal.isValid(url));
+      url = "https://255.255.255.256"; // just too large invalid authority
+      assertMessage = String.format("This url should NOT be valid: %s", url);
+      assertFalse(assertMessage, urlVal.isValid(url));
+      url = "https://0.0.0.-1"; // just too small invalid authority
+      assertMessage = String.format("This url should NOT be valid: %s", url);
+      assertFalse(assertMessage, urlVal.isValid(url));
    }
-   //You need to create more test cases for your Partitions if you need to
 
    public void testIsValid()
    {
