@@ -279,7 +279,7 @@ public class UrlValidator implements Serializable {
             }
             allowedSchemes = new HashSet<String>(schemes.length);
             for(int i=0; i < schemes.length; i++) {
-                allowedSchemes.add(schemes[i].toUpperCase(Locale.ENGLISH));
+                allowedSchemes.add(schemes[i].toLowerCase(Locale.ENGLISH));// bug: toUpperCase(Locale.ENGLISH));
 
             }
         }
@@ -301,13 +301,13 @@ public class UrlValidator implements Serializable {
         if (value == null) {
             return false;
         }
-
+        
         // Check the whole url address structure
         Matcher urlMatcher = URL_PATTERN.matcher(value);
         if (!urlMatcher.matches()) {
             return false;
         }
-
+        
         String scheme = urlMatcher.group(PARSE_URL_SCHEME);
         if (!isValidScheme(scheme)) {
             return false;
@@ -328,7 +328,7 @@ public class UrlValidator implements Serializable {
                 return false;
             }
         }
-
+        
         if (!isValidPath(urlMatcher.group(PARSE_URL_PATH))) {
             return false;
         }

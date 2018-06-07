@@ -52,6 +52,24 @@ public class UrlValidatorTest extends TestCase {
        assertTrue(assertMessage, urlVal.isValid(url));
    }
 
+   //test valid http address with ~ in path
+   public void testManualTest_05()
+   {
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://web.engr.oregonstate.edu/~hollenbt";
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+   
+  //test valid http address with multiple / separators in path
+   public void testManualTest_06()
+   {
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://en.wikipedia.org/wiki/Main_Page";
+       String assertMessage = String.format("This url should be valid: %s", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+   
    //test invalid empty address
    public void testManualTestInvalid_01()
    {
@@ -84,6 +102,15 @@ public class UrlValidatorTest extends TestCase {
    {
        UrlValidator urlVal = new UrlValidator(null);
        String url = "http://www.website.com:-5000";
+       String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+   
+   //test invalid http without authority
+   public void testManualTestInvalid_05()
+   {
+       UrlValidator urlVal = new UrlValidator(null);
+       String url = "http://";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
