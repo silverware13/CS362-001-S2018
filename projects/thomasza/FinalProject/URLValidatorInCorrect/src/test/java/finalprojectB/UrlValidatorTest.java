@@ -15,7 +15,7 @@ public class UrlValidatorTest extends TestCase {
    public UrlValidatorTest(String testName) {
    	super(testName);
    }
-
+   
    //test valid http address
    public void testManualTest_01()
    {
@@ -69,6 +69,42 @@ public class UrlValidatorTest extends TestCase {
        String assertMessage = String.format("This url should be valid: %s", url);
        assertTrue(assertMessage, urlVal.isValid(url));
    }
+
+   //test valid when all schemes are allowed
+   public void testManualTest_07()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+       String url = "all://www.google.com";
+       String assertMessage = String.format("This url should be valid: %s ALLOW_ALL_SCHEMES", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+   
+   //test special file allowed
+   public void testManualTest_08()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+       String url = "file://www.google.com";
+       String assertMessage = String.format("This url should be valid: %s ALLOW_ALL_SCHEMES", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+   
+   //test file can have no authority
+   public void testManualTest_09()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+       String url = "file:";
+       String assertMessage = String.format("This url should be valid: %s ALLOW_ALL_SCHEMES", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
+   
+   //allow two slashes in path
+   public void testManualTest_10()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_2_SLASHES);
+       String url = "http://www.google.com//stuff.jpg";
+       String assertMessage = String.format("This url should be valid: %s ALLOW_2_SLASHES ", url);
+       assertTrue(assertMessage, urlVal.isValid(url));
+   }
    
    //test invalid empty address
    public void testManualTestInvalid_01()
@@ -112,6 +148,24 @@ public class UrlValidatorTest extends TestCase {
        UrlValidator urlVal = new UrlValidator(null);
        String url = "http://";
        String assertMessage = String.format("This url should NOT be valid: %s", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+
+   //test invalid file allowed with no scheme and trailing :
+   public void testManualTestInvalid_06()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES);
+       String url = "file://:";
+       String assertMessage = String.format("This url should NOT be valid: %s ALLOW_ALL_SCHEMES", url);
+       assertFalse(assertMessage, urlVal.isValid(url));
+   }
+   
+   //test invalid don't allowed fragments
+   public void testManualTestInvalid_07()
+   {
+       UrlValidator urlVal = new UrlValidator(UrlValidator.NO_FRAGMENTS);
+       String url = "http://www.google.com/features.htm#print";
+       String assertMessage = String.format("This url should NOT be valid: %s ALLOW_ALL_SCHEMES", url);
        assertFalse(assertMessage, urlVal.isValid(url));
    }
 
